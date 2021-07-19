@@ -1,9 +1,9 @@
-import 'package:bloc_app/bloc/car_bloc.dart';
+import 'package:bloc_app/component/car/car_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'events/car_event.dart';
-import 'model/car.dart';
+import 'car_event.dart';
+import '../../model/car.dart';
 
 class CarList extends StatelessWidget {
   @override

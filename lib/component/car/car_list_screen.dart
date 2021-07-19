@@ -1,4 +1,4 @@
-import 'package:bloc_app/car_list.dart';
+import 'package:bloc_app/component/car/car_list.dart';
 import 'package:flutter/material.dart';
 
 class CarListScreen extends StatelessWidget {

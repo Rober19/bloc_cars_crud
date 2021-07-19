@@ -1,4 +1,4 @@
-import 'package:bloc_app/events/car_event.dart';
+import 'package:bloc_app/component/car/car_event.dart';
 import 'package:bloc_app/model/car.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

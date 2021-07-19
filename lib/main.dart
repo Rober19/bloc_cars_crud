@@ -1,11 +1,14 @@
-import 'package:bloc_app/bloc/car_bloc.dart';
+import 'package:bloc_app/component/car/car_bloc.dart';
 // import 'package:bloc_app/bloc/car_bloc_delegate.dart';
-import 'package:bloc_app/car_form.dart';
+import 'package:bloc_app/component/car/car_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'component/car/car_bloc_delegate.dart';
+
 void main() {
-  // BlocSupervisor.delegate = CarBlocDelegate();
+  //logger
+  Bloc.observer = CarBlocDelegate();
   runApp(MyApp());
 }
 

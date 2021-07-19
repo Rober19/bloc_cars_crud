@@ -4,14 +4,14 @@ class CarBlocDelegate extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
-    print(event);
+    print('onEvent [event]: ${event.toString()}');
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    print(transition.currentState);
-    print(transition.nextState);
+    print('onTransition [currentState]: ${transition.currentState.toString()}');
+    print('onTransition [nextState]: ${transition.nextState.toString()}');
   }
 
   @override
