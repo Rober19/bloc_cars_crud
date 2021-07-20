@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>WebSocket Test</title>
+<script language="javascript" type="text/javascript">
+  const socket = new WebSocket('wss://ws.finnhub.io?token=c3rdsk2ad3i88nmlpvk0');
+
+  // Connection opened -> Subscribe
+  socket.addEventListener('open', function (event) {
+    socket.send(JSON.stringify({ type: 'subscribe', symbol: 'AAPL' }));
+    socket.send(JSON.stringify({ type: 'subscribe', symbol: 'BINANCE:BTCUSDT' }));
+    socket.send(JSON.stringify({ type: 'subscribe', symbol: 'IC MARKETS:1' }));
+  });
+
+  // Listen for messages
+  socket.addEventListener('message', function (event) {
+    console.log('Message from server ', JSON.parse(event.data));
+  });
+
+  // Unsubscribe
+  var unsubscribe = function (symbol) {
+    socket.send(JSON.stringify({ type: 'unsubscribe', symbol: symbol }));
+  };
+</script>
+
+<h2>WebSocket Test</h2>
+
+<div id="output"></div>

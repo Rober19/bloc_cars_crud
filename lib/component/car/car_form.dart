@@ -1,9 +1,11 @@
 import 'package:bloc_app/component/car/car_list.dart';
 import 'package:bloc_app/component/car/car_list_screen.dart';
+import 'package:bloc_app/component/stock/cubit/stock_cubit.dart';
+import 'package:bloc_app/component/stock/stock_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'car_bloc.dart';
+import 'bloc/car_bloc.dart';
 import 'car_event.dart';
 import 'car_model.dart';
 
@@ -39,9 +41,7 @@ class _CarFormState extends State<CarForm> {
                 controller: myController,
                 style: TextStyle(fontSize: 22),
                 onSubmitted: (value) {
-                  BlocProvider.of<CarBloc>(context).add(
-                    CarEvent.add(car: Car(name: _carname)),
-                  );
+                  addCar(context, Car(name: _carname));
 
                   myController.clear();
                   myFocusNode.requestFocus();
@@ -61,12 +61,9 @@ class _CarFormState extends State<CarForm> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           FloatingActionButton(
-            heroTag: 'button1',
-            child: Icon(Icons.save),
-            onPressed: () => BlocProvider.of<CarBloc>(context).add(
-              CarEvent.add(car: Car(name: _carname)),
-            ),
-          ),
+              heroTag: 'button1',
+              child: Icon(Icons.save),
+              onPressed: () => addCar(context, Car(name: _carname))),
           SizedBox(height: 16),
           FloatingActionButton(
             heroTag: 'button2',
@@ -76,8 +73,26 @@ class _CarFormState extends State<CarForm> {
               MaterialPageRoute(builder: (context) => CarListScreen()),
             ),
           ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            heroTag: 'button3',
+            backgroundColor: Colors.red,
+            child: Icon(Icons.navigate_next),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(                
+                  builder: (_) => BlocProvider<StockCubit>(
+                        create: (context) => StockCubit(),
+                        child: StockUI(title: 'Flutter Demo Home Page'),
+                      )),
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  void addCar(context, Car car) {
+    BlocProvider.of<CarBloc>(context).add(CarEvent.add(car: car));
   }
 }
