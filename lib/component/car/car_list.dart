@@ -54,10 +54,10 @@ class CarList extends StatelessWidget {
                       },
                       onSelected: (selValue) {
                         dynamic complex = selValue;
-
+                        //
                         var value = complex['value'];
                         var data = complex['data'];
-
+                        //
                         actionPopUpItemSelected(value, context, data);
                       },
                     ),
@@ -81,7 +81,38 @@ class CarList extends StatelessWidget {
   }
 
   void actionPopUpItemSelected(String value, context, event) {
+    switch (value) {
+      case 'edit':
+        {
+          return EditCarModal(context);
+        }
+    }
     //
-    BlocProvider.of<CarBloc>(context).add(event);
+    // BlocProvider.of<CarBloc>(context).add(event);
+  }
+
+  EditCarModal(context) {
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          color: Colors.blue[100],
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text('Modal BottomSheet'),
+                ElevatedButton(
+                  child: const Text('Close BottomSheet'),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

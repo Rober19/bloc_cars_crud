@@ -3,7 +3,8 @@ import 'package:bloc_app/model/car.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CarBloc extends Bloc<CarEvent, List<Car>> {
-  CarBloc() : super([]);
+  // Initial (constructor)
+  CarBloc() : super([Car(name: '123')]);
 
   @override
   Stream<List<Car>> mapEventToState(CarEvent event) async* {
