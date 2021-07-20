@@ -1,4 +1,4 @@
-import 'package:bloc_app/model/car.dart';
+import 'car_model.dart';
 
 enum EventType { add, edit, delete }
 

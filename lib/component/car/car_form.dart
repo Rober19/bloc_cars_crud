@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'car_bloc.dart';
 import 'car_event.dart';
-import '../../model/car.dart';
+import 'car_model.dart';
 
 class CarForm extends StatefulWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:bloc_app/component/car/car_event.dart';
-import 'package:bloc_app/model/car.dart';
+import 'package:bloc_app/component/car/car_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CarBloc extends Bloc<CarEvent, List<Car>> {

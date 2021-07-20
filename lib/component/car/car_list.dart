@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'car_event.dart';
-import '../../model/car.dart';
+import 'car_model.dart';
 
 class CarList extends StatelessWidget {
   @override
