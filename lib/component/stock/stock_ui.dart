@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:bloc_app/component/stock/cubit/stock_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/status.dart' as status;
 
 import 'cubit/stock_cubit.dart';
 
@@ -14,8 +18,13 @@ class StockUI extends StatefulWidget {
 }
 
 class _StockUI extends State<StockUI> {
+  final channel = WebSocketChannel.connect(
+    Uri.parse('wss://ws.finnhub.io?token=c3rdsk2ad3i88nmlpvk0'),
+  );
+
   @override
   Widget build(BuildContext context) {
+    test(channel, context);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -25,7 +34,7 @@ class _StockUI extends State<StockUI> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              '...',
             ),
             // BlocConsumer = BlocListener + BlocBuilder
             BlocConsumer<StockCubit, StockState>(
@@ -85,5 +94,38 @@ class _StockUI extends State<StockUI> {
         ),
       ),
     );
+  }
+
+  void dispose() {
+    // WidgetsBinding.instance.removeObserver(this);
+    test_close(channel);
+    super.dispose();
+  }
+
+  test(WebSocketChannel channel, context) {
+    print('test');
+
+    final jsonEncoder = JsonEncoder();
+
+    channel.sink
+        .add(jsonEncoder.convert({"type": 'subscribe', "symbol": 'AAPL'}));
+    channel.sink.add(jsonEncoder
+        .convert({"type": 'subscribe', "symbol": 'BINANCE:BTCUSDT'}));
+    channel.sink.add(
+        jsonEncoder.convert({"type": 'subscribe', "symbol": 'IC MARKETS:1'}));
+
+    channel.stream.listen((message) {
+      Map<String, dynamic> stock = jsonDecode(message);
+      // channel.sink.add('received!');
+
+      dynamic testv = double.tryParse('${stock['data'][0]['p']}') ?? 'NONE';
+
+      if (testv != 'NONE') BlocProvider.of<StockCubit>(context).replace(testv);
+      // channel.sink.close(status.goingAway);
+    });
+  }
+
+  test_close(WebSocketChannel channel) {
+    channel.sink.close(status.goingAway);
   }
 }

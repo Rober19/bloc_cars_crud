@@ -9,6 +9,7 @@ import 'component/car/bloc/car_bloc_delegate.dart';
 void main() {
   //logger
   Bloc.observer = CarBlocDelegate();
+  // Bloc.observer = StockDelegate();
   runApp(MyApp());
 }
 
