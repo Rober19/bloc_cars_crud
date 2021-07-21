@@ -80,10 +80,10 @@ class _CarFormState extends State<CarForm> {
             child: Icon(Icons.navigate_next),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(                
+              MaterialPageRoute(
                   builder: (_) => BlocProvider<StockCubit>(
                         create: (context) => StockCubit(),
-                        child: StockUI(title: 'Flutter Demo Home Page'),
+                        child: StockUI(title: 'Stocks Page'),
                       )),
             ),
           ),

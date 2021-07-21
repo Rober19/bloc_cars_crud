@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:convert' show json;
 
 import 'package:bloc_app/component/stock/cubit/stock_cubit.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +24,9 @@ class _StockUI extends State<StockUI> {
 
   @override
   Widget build(BuildContext context) {
+    dynamic prevValue = false;
+
+    testInit();
     test(channel, context);
     return Scaffold(
       appBar: AppBar(
@@ -58,37 +61,43 @@ class _StockUI extends State<StockUI> {
               builder: (context, state) {
                 dynamic counterValue = state.counterValue;
 
-                return Text(
-                  ' Stock : ' + counterValue.toString(),
-                  style: Theme.of(context).textTheme.headline4,
+                bool wasIncremented = false;
+
+                if (prevValue is bool)
+                  prevValue = counterValue;
+                else if (prevValue < counterValue) wasIncremented = true;
+
+                prevValue = counterValue;
+
+                // return Text(
+                //   ' Stock : ' + counterValue.toString(),
+                //   style: TextStyle(color: Colors.blueAccent, fontSize: 50),
+                // );
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      ' Stock : ' + counterValue.toString(),
+                      style: TextStyle(color: Colors.blueAccent, fontSize: 50),
+                    ),
+                    (wasIncremented)
+                        ? Icon(
+                            Icons.arrow_drop_up,
+                            size: 150,
+                            color: Colors.greenAccent[700],
+                          )
+                        : Icon(
+                            Icons.arrow_drop_down,
+                            size: 150,
+                            color: Colors.redAccent[700],
+                          ),
+                  ],
                 );
               },
             ),
             SizedBox(
               height: 24,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FloatingActionButton(
-                  heroTag: Text('${widget.title}'),
-                  onPressed: () {
-                    BlocProvider.of<StockCubit>(context).decrement();
-                    // context.bloc<CounterCubit>().decrement();
-                  },
-                  tooltip: 'Decrement',
-                  child: Icon(Icons.remove),
-                ),
-                FloatingActionButton(
-                  heroTag: Text('${widget.title} #2'),
-                  onPressed: () {
-                    BlocProvider.of<StockCubit>(context).increment();
-                    // context.bloc<CounterCubit>().increment();
-                  },
-                  tooltip: 'Increment',
-                  child: Icon(Icons.add),
-                ),
-              ],
             ),
           ],
         ),
@@ -98,34 +107,35 @@ class _StockUI extends State<StockUI> {
 
   void dispose() {
     // WidgetsBinding.instance.removeObserver(this);
-    test_close(channel);
+    print('dispose');
+    testClose(channel);
     super.dispose();
+  }
+
+  testInit() {
+    channel.sink.add(json.encode({"type": 'subscribe', "symbol": 'AAPL'}));
+    channel.sink
+        .add(json.encode({"type": 'subscribe', "symbol": 'BINANCE:BTCUSDT'}));
+    channel.sink
+        .add(json.encode({"type": 'subscribe', "symbol": 'IC MARKETS:1'}));
   }
 
   test(WebSocketChannel channel, context) {
     print('test');
 
-    final jsonEncoder = JsonEncoder();
-
-    channel.sink
-        .add(jsonEncoder.convert({"type": 'subscribe', "symbol": 'AAPL'}));
-    channel.sink.add(jsonEncoder
-        .convert({"type": 'subscribe', "symbol": 'BINANCE:BTCUSDT'}));
-    channel.sink.add(
-        jsonEncoder.convert({"type": 'subscribe', "symbol": 'IC MARKETS:1'}));
-
     channel.stream.listen((message) {
-      Map<String, dynamic> stock = jsonDecode(message);
+      Map<String, dynamic> stock = json.decode(message);
       // channel.sink.add('received!');
 
-      dynamic testv = double.tryParse('${stock['data'][0]['p']}') ?? 'NONE';
+      dynamic testv = double.tryParse('${stock['data']?[0]?['p']}') ?? 'NONE';
+
+      // print(testv);
 
       if (testv != 'NONE') BlocProvider.of<StockCubit>(context).replace(testv);
-      // channel.sink.close(status.goingAway);
     });
   }
 
-  test_close(WebSocketChannel channel) {
-    channel.sink.close(status.goingAway);
+  testClose(WebSocketChannel channel) {
+    channel.sink.close(4001, 'Custom close reason.');
   }
 }
