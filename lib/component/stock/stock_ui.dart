@@ -79,17 +79,17 @@ class _StockUI extends State<StockUI> {
                   children: [
                     Text(
                       ' Stock : ' + counterValue.toString(),
-                      style: TextStyle(color: Colors.blueAccent, fontSize: 50),
+                      style: TextStyle(color: Colors.blueAccent, fontSize: 20),
                     ),
                     (wasIncremented)
                         ? Icon(
                             Icons.arrow_drop_up,
-                            size: 150,
+                            size: 80,
                             color: Colors.greenAccent[700],
                           )
                         : Icon(
                             Icons.arrow_drop_down,
-                            size: 150,
+                            size: 80,
                             color: Colors.redAccent[700],
                           ),
                   ],
@@ -114,10 +114,10 @@ class _StockUI extends State<StockUI> {
 
   testInit() {
     channel.sink.add(json.encode({"type": 'subscribe', "symbol": 'AAPL'}));
-    channel.sink
-        .add(json.encode({"type": 'subscribe', "symbol": 'BINANCE:BTCUSDT'}));
-    channel.sink
-        .add(json.encode({"type": 'subscribe', "symbol": 'IC MARKETS:1'}));
+    // channel.sink
+    //     .add(json.encode({"type": 'subscribe', "symbol": 'BINANCE:BTCUSDT'}));
+    // channel.sink
+    //     .add(json.encode({"type": 'subscribe', "symbol": 'IC MARKETS:1'}));
   }
 
   test(WebSocketChannel channel, context) {

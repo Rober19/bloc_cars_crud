@@ -22,7 +22,7 @@ class _CarFormState extends State<CarForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black54,
+      // backgroundColor: Colors.black54,
       appBar: AppBar(title: Text('Multiplatform App')),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(36),
